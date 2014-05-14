@@ -31,6 +31,15 @@ sub env_config_dirs {
 # if you aren't directly subclassing Env::Hybrid
 sub import_depth { 1 }
 
+sub split {
+    my $path_list = shift;
+    CORE::split(/$Config{path_sep}/, $path_list, @_);
+}
+
+sub join {
+    CORE::join($Config{path_sep}, @_);
+}
+
 sub dirs {
     my $class = shift;
     my @dirs;
@@ -38,7 +47,7 @@ sub dirs {
         push @dirs, $class->env_config_home;;
     }
     if ( $class->env_config_dirs ) {
-        push @dirs, split($Config{path_sep}, $class->env_config_dirs);
+        push @dirs, Env::Hybrid::split($class->env_config_dirs);
     }
     return @dirs;
 }
