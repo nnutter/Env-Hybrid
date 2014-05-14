@@ -56,36 +56,40 @@ sub import {
     my $class = shift;
     my @vars  = @_;
 
-    for my $var (@vars) {
-        _validate_var_name($var);
-    }
-
-    my $config = $class->_load();
 
     for my $var (@vars) {
-        my $varname = ($var =~ /\$(.*)/)[0];
-        my $fullvarname = join('::', $class, $varname);
-        my $value = defined($ENV{$varname}) ? $ENV{$varname} : $config->{$varname};
-        _define_scalar($fullvarname, $value);
+        my ($sigil, $varname) = ($var =~ /^(\$?)(.*)$/);
+        _validate_var_name($varname);
+        if ($sigil) {
+            _define_scalar($class, $varname);
+        } else {
+            _define_constant($class, $varname);
+        }
     }
 
     $class->export_to_level($class->import_depth, $class, @vars);
 }
 
 sub _define_scalar {
-    my ($name, $value) = @_;
+    my ($package, $name) = @_;
+    my $fqname = CORE::join('::', $package, $name);
     no strict 'refs';
-    ${"$name"} = $value;
+#    ${"$fqname"};
+    tie ${"$fqname"}, __PACKAGE__, $package, $name;
 }
 
 sub _define_constant {
-    my ($name, $value) = @_;
+    my ($package, $name) = @_;
+    my $fqname = CORE::join('::', $package, $name);
     no strict 'refs';
-    *{"$name"} = sub { $value };
+    *{"$fqname"} = sub {
+        my $config = $package->_load();
+        my $value = defined($ENV{$name}) ? $ENV{$name} : $config->{$name};
+    };
 }
 
 sub _validate_var_name {
-    unless ($_[0] =~ /^\$?[A-Za-z_]+$/) {
+    unless ($_[0] =~ /^[A-Za-z_]+$/) {
         croak 'invalid import name: ' . $_[0];
     }
 }
@@ -115,6 +119,26 @@ sub _merge {
         }
     }
     return $merge;
+}
+
+sub TIESCALAR {
+    my ($class, $package, $name) = @_;
+    bless \$name, $package;
+}
+
+sub FETCH {
+    my ($self) = @_;
+    my $config = $self->_load();
+    my $value = defined($ENV{$$self}) ? $ENV{$$self} : $config->{$$self};
+}
+
+sub STORE {
+    my ($self, $value) = @_;
+    if (defined($value)) {
+        $ENV{$$self} = $value;
+    } else {
+        delete $ENV{$$self};
+    }
 }
 
 1;
