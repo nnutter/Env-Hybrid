@@ -57,7 +57,6 @@ sub import {
     my @vars  = @_;
 
     for my $var (@vars) {
-        $var = _normalized_var_name($var);
         _validate_var_name($var);
     }
 
@@ -84,12 +83,6 @@ sub _validate_var_name {
     }
 }
 
-sub _normalized_var_name {
-    unless ($_[0] =~ /^\$/) {
-        $_[0] = '$' . $_[0];
-    }
-    return $_[0];
-}
 
 memoize('_load');
 sub _load {
