@@ -88,8 +88,8 @@ sub _define_constant {
 }
 
 sub _validate_var_name {
-    unless ($_[0] =~ /^\$[A-Za-z_]+$/) {
-        croak 'invalid variable name: ' . $_[0];
+    unless ($_[0] =~ /^\$?[A-Za-z_]+$/) {
+        croak 'invalid import name: ' . $_[0];
     }
 }
 
