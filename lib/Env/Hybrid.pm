@@ -81,6 +81,12 @@ sub _define_scalar {
     ${"$name"} = $value;
 }
 
+sub _define_constant {
+    my ($name, $value) = @_;
+    no strict 'refs';
+    *{"$name"} = sub { $value };
+}
+
 sub _validate_var_name {
     unless ($_[0] =~ /^\$[A-Za-z_]+$/) {
         croak 'invalid variable name: ' . $_[0];
