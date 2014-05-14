@@ -66,15 +66,19 @@ sub import {
         my $varname = ($var =~ /\$(.*)/)[0];
         my $fullvarname = join('::', $class, $varname);
         if (defined $ENV{$varname}) {
-            no strict 'refs';
-            ${"$fullvarname"} = $ENV{$varname};
+            _define_scalar($fullvarname, $ENV{$varname});
         } else {
-            no strict 'refs';
-            ${"$fullvarname"} = $config->{$varname};
+            _define_scalar($fullvarname, $config->{$varname});
         }
     }
 
     $class->export_to_level($class->import_depth, $class, @vars);
+}
+
+sub _define_scalar {
+    my ($name, $value) = @_;
+    no strict 'refs';
+    ${"$name"} = $value;
 }
 
 sub _validate_var_name {
@@ -82,7 +86,6 @@ sub _validate_var_name {
         croak 'invalid variable name: ' . $_[0];
     }
 }
-
 
 memoize('_load');
 sub _load {
