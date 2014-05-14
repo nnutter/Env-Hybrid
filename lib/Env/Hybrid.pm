@@ -65,11 +65,8 @@ sub import {
     for my $var (@vars) {
         my $varname = ($var =~ /\$(.*)/)[0];
         my $fullvarname = join('::', $class, $varname);
-        if (defined $ENV{$varname}) {
-            _define_scalar($fullvarname, $ENV{$varname});
-        } else {
-            _define_scalar($fullvarname, $config->{$varname});
-        }
+        my $value = defined($ENV{$varname}) ? $ENV{$varname} : $config->{$varname};
+        _define_scalar($fullvarname, $value);
     }
 
     $class->export_to_level($class->import_depth, $class, @vars);
