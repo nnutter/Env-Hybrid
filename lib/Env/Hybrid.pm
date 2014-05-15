@@ -93,10 +93,13 @@ sub _validate_var_name {
 memoize('_load');
 sub _load {
     my $class = shift;
-    my @hashes = map {
-        my $path = File::Spec->join($_, $class->relative_path);
-        $class->load_file($path);
-    } $class->dirs;
+
+    my @hashes;
+    for my $dir ($class->dirs) {
+        my $path = File::Spec->join($dir, $class->relative_path);
+        next unless -f $path;
+        push @hashes, $class->load_file($path);
+    }
     my $merge = _merge(reverse @hashes);
     for my $key (keys %$merge) {
         if (ref $merge->{$key}) {
