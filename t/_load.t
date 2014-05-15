@@ -8,15 +8,17 @@ use warnings;
 
 use Test::More tests => 2;
 
+delete $ENV{XDG_CONFIG_HOME};
+delete $ENV{XDG_CONFIG_DIRS};
+
 require Env::Hybrid;
 
 my $count;
 
 do {
     no warnings qw(once redefine);
-    *Env::Hybrid::relative_path = sub { $count++ };
-    *Env::Hybrid::_merge = sub { {} };
-    *Env::Hybrid::load_file = sub { {} };
+    *Env::Hybrid::_merge = sub { $count++; {} };
+    *Env::Hybrid::relative_path = sub {};
 };
 
 $count = 0;
