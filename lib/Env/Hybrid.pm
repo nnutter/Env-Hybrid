@@ -32,11 +32,11 @@ sub env_config_dirs {
 
 sub split_path {
     my $path_list = shift;
-    CORE::split(/$Config{path_sep}/, $path_list, @_);
+    split(/$Config{path_sep}/, $path_list, @_);
 }
 
 sub join_path {
-    CORE::join($Config{path_sep}, @_);
+    join($Config{path_sep}, @_);
 }
 
 sub dirs {
@@ -72,21 +72,21 @@ sub import {
 
 sub _set_export_ok {
     my ($package) = @_;
-    my $fqname = CORE::join('::', $package, 'EXPORT_OK');
+    my $fqname = join('::', $package, 'EXPORT_OK');
     no strict 'refs';
     @{"$fqname"} = map { $_, '$' . $_ } $package->vars();
 }
 
 sub _define_scalar {
     my ($package, $name) = @_;
-    my $fqname = CORE::join('::', $package, $name);
+    my $fqname = join('::', $package, $name);
     no strict 'refs';
     tie ${"$fqname"}, __PACKAGE__, $package, $name;
 }
 
 sub _define_constant {
     my ($package, $name) = @_;
-    my $fqname = CORE::join('::', $package, $name);
+    my $fqname = join('::', $package, $name);
     no strict 'refs';
     *{"$fqname"} = sub {
         my $config = $package->_load();
