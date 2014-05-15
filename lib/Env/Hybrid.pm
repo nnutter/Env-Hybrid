@@ -30,7 +30,7 @@ sub env_config_dirs {
     return $ENV{XDG_CONFIG_DIRS};
 }
 
-sub split {
+sub split_path {
     my $path_list = shift;
     CORE::split(/$Config{path_sep}/, $path_list, @_);
 }
@@ -46,7 +46,7 @@ sub dirs {
         push @dirs, $class->env_config_home;;
     }
     if ( $class->env_config_dirs ) {
-        push @dirs, Env::Hybrid::split($class->env_config_dirs);
+        push @dirs, Env::Hybrid::split_path($class->env_config_dirs);
     }
     return @dirs;
 }
