@@ -35,7 +35,7 @@ sub split_path {
     CORE::split(/$Config{path_sep}/, $path_list, @_);
 }
 
-sub join {
+sub join_path {
     CORE::join($Config{path_sep}, @_);
 }
 
