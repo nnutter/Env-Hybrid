@@ -25,6 +25,6 @@ Env::Hybrid::_load('Env::Hybrid');
 is($count, 1, 'memoize works for _load');
 
 $count = 0;
-Env::Hybrid::Test->import();
-Env::Hybrid::Test->import();
+Env::Hybrid::Test->_load();
+Env::Hybrid::Test->_load();
 is($count, 1, 'memoize works for _load (subclass)');
