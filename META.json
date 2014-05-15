@@ -48,10 +48,22 @@
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.98"
+            "Test::More" : "0.98",
+            "YAML::Syck" : "0"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/nnutter/Env-Hybrid/issues"
+      },
+      "homepage" : "https://github.com/nnutter/Env-Hybrid",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/nnutter/Env-Hybrid.git",
+         "web" : "https://github.com/nnutter/Env-Hybrid"
+      }
+   },
    "version" : "0.01"
 }

@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/nnutter/Env-Hybrid.png?branch=master)](https://travis-ci.org/nnutter/Env-Hybrid)
 # NAME
 
 Env::Hybrid - It's new $module
