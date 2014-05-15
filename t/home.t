@@ -29,13 +29,13 @@ our (@EXPORT_OK, $env_config_home_data, @env_config_dirs_data);
 BEGIN {
     my $i = 0;
     my $inc = sub { $i = $i + 10 };
-    @EXPORT_OK = qw(FOO);
-    $env_config_home_data = { $EXPORT_OK[0] => $inc->() };
+    my @vars = qw(FOO);
+    @EXPORT_OK = map { $_, '$' . $_ } @vars;
+    $env_config_home_data = { $vars[0] => $inc->() };
     @env_config_dirs_data = (
-        { $EXPORT_OK[0] => $inc->() },
-        { $EXPORT_OK[0] => $inc->() },
+        { $vars[0] => $inc->() },
+        { $vars[0] => $inc->() },
     );
-    @EXPORT_OK = qw($FOO);
     DumpFile(File::Spec->join($env_config_home,    $relative_path), $env_config_home_data);
     DumpFile(File::Spec->join($env_config_dirs[0], $relative_path), $env_config_dirs_data[0]);
     DumpFile(File::Spec->join($env_config_dirs[1], $relative_path), $env_config_dirs_data[1]);
@@ -43,11 +43,16 @@ BEGIN {
 
 package main;
 
-use Test::More tests => 4;
+use Test::More tests => 7;
 
-use Env::Hybrid::YAML qw(FOO);
+BEGIN {
+    Env::Hybrid::YAML->import(qw(FOO $FOO));
+}
 
 ok  (!defined($ENV{FOO}));
+is  (FOO, $Env::Hybrid::YAML::env_config_home_data->{FOO});
+isnt(FOO, $Env::Hybrid::YAML::env_config_dirs_data[0]{FOO});
+isnt(FOO, $Env::Hybrid::YAML::env_config_dirs_data[1]{FOO});
 is  ($FOO, $Env::Hybrid::YAML::env_config_home_data->{FOO});
 isnt($FOO, $Env::Hybrid::YAML::env_config_dirs_data[0]{FOO});
 isnt($FOO, $Env::Hybrid::YAML::env_config_dirs_data[1]{FOO});
