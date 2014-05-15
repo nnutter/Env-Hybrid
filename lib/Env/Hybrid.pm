@@ -28,9 +28,6 @@ sub env_config_dirs {
     return $ENV{XDG_CONFIG_DIRS};
 }
 
-# if you aren't directly subclassing Env::Hybrid
-sub import_depth { 1 }
-
 sub split {
     my $path_list = shift;
     CORE::split(/$Config{path_sep}/, $path_list, @_);
@@ -56,7 +53,6 @@ sub import {
     my $class = shift;
     my @vars  = @_;
 
-
     for my $var (@vars) {
         my ($sigil, $varname) = ($var =~ /^(\$?)(.*)$/);
         _validate_var_name($varname);
@@ -67,7 +63,7 @@ sub import {
         }
     }
 
-    $class->export_to_level($class->import_depth, $class, @vars);
+    $class->export_to_level(1, $class, @vars);
 }
 
 sub _define_scalar {
