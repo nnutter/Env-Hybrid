@@ -20,4 +20,4 @@ it under the same terms as Perl itself.
 
 # AUTHOR
 
-Nathaniel Nutter <iam@nnutter.com>
+Nathaniel Nutter <nnutter@cpan.org>

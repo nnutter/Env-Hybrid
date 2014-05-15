@@ -1,7 +1,7 @@
 {
    "abstract" : "It's new $module",
    "author" : [
-      "Nathaniel Nutter <iam@nnutter.com>"
+      "Nathaniel Nutter <nnutter@cpan.org>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.120921",
@@ -65,5 +65,8 @@
          "web" : "https://github.com/nnutter/Env-Hybrid"
       }
    },
-   "version" : "0.01"
+   "version" : "0.01",
+   "x_contributors" : [
+      "Nathaniel Nutter <iam@nnutter.com>"
+   ]
 }
