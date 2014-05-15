@@ -167,7 +167,7 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Nathaniel Nutter E<lt>iam@nnutter.comE<gt>
+Nathaniel Nutter E<lt>nnutter@cpan.orgE<gt>
 
 =cut
 
