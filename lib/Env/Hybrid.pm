@@ -46,7 +46,7 @@ sub dirs {
         push @dirs, $class->env_config_home;;
     }
     if ( $class->env_config_dirs ) {
-        push @dirs, Env::Hybrid::split_path($class->env_config_dirs);
+        push @dirs, split_path($class->env_config_dirs);
     }
     return @dirs;
 }
