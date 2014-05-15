@@ -16,6 +16,8 @@ my @env_config_dirs;
 BEGIN { @env_config_dirs = (tempdir(), tempdir()) }
 sub env_config_dirs { join($Config{path_sep}, @env_config_dirs) };
 
+sub vars { qw(FOO) }
+
 my $relative_path;
 BEGIN { $relative_path = 'config.yaml' }
 sub relative_path { $relative_path };
@@ -25,12 +27,11 @@ sub load_file {
     return LoadFile($path);
 }
 
-our (@EXPORT_OK, $env_config_home_data, @env_config_dirs_data);
+our ($env_config_home_data, @env_config_dirs_data);
 BEGIN {
     my $i = 0;
     my $inc = sub { $i = $i + 10 };
-    my @vars = qw(FOO);
-    @EXPORT_OK = map { $_, '$' . $_ } @vars;
+    my @vars = vars();
     $env_config_home_data = { };
     @env_config_dirs_data = (
         { $vars[0] => $inc->() },
