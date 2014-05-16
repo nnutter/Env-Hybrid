@@ -168,6 +168,29 @@ Env::Hybrid - It's new $module
 
 Env::Hybrid is ...
 
+=head1 EXAMPLE
+
+Here's an example where variables would be defined as packages under MyApp::Env:
+
+    package MyApp::Env;
+    use parent 'Env::Hybrid';
+
+    use Module::Find qw(findsubmod);
+    use YAML::Syck qw(LoadFile);
+
+    sub vars {
+        my $package = __PACKAGE__;
+        my @var_packages = findsubmod 'MyApp::Env';
+        return map { [$_ =~ /^$package\::(.*)$/]->[0] } @var_packages;
+    }
+
+    sub relative_path { 'myapp/config.yaml' }
+    sub load_file { shift; LoadFile(shift) }
+
+Elsewhere the variables could then be imported:
+
+    use MyApp::Env qw(MYAPP_LOGIN MYAPP_PASSWORD);
+
 =head1 LICENSE
 
 Copyright (C) Nathaniel Nutter.
