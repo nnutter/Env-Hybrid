@@ -1,15 +1,12 @@
 [![Build Status](https://travis-ci.org/nnutter/Env-Hybrid.png?branch=master)](https://travis-ci.org/nnutter/Env-Hybrid)
 # NAME
 
-Env::Hybrid - It's new $module
-
-# SYNOPSIS
-
-    use Env::Hybrid;
+Env::Hybrid - Use environment variables and configuration files.
 
 # DESCRIPTION
 
-Env::Hybrid is ...
+Env::Hybrid is an abstract class that should be used to implement a
+configuration singleton for your app.
 
 # EXAMPLE
 

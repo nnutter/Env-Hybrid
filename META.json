@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Use environment variables and configuration files.",
    "author" : [
       "Nathaniel Nutter <nnutter@cpan.org>"
    ],
