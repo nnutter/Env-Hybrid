@@ -158,15 +158,12 @@ __END__
 
 =head1 NAME
 
-Env::Hybrid - It's new $module
-
-=head1 SYNOPSIS
-
-    use Env::Hybrid;
+Env::Hybrid - Use environment variables and configuration files.
 
 =head1 DESCRIPTION
 
-Env::Hybrid is ...
+Env::Hybrid is an abstract class that should be used to implement a
+configuration singleton for your app.
 
 =head1 EXAMPLE
 
