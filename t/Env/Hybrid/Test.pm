@@ -26,15 +26,28 @@ sub init {
         $ENV{$k} = $test_data->{ENV}{$k};
     }
 
-    my @data = ($test_data->{HOME}, @{$test_data->{DIRS}});
+
+    my @data;
+    if (exists $test_data->{HOME}) {
+        push @data, $test_data->{HOME};
+    }
+    if (exists $test_data->{DIRS}) {
+        push @data, @{$test_data->{DIRS}};
+    }
+
     my @dirs = map { tempdir() } @data;
     for (my $i = 0; $i < @data; $i++) {
         my $tempfilename = File::Spec->join($dirs[$i], relative_path());
         push @ivars, keys %{$data[$i]};
         DumpFile($tempfilename, $data[$i]);
     }
-    $ENV{ENV_CONFIG_HOME} = shift @dirs;
-    $ENV{ENV_CONFIG_DIRS} = join($Config{path_sep}, @dirs);
+
+    if (exists $test_data->{HOME}) {
+        $ENV{XDG_CONFIG_HOME} = shift @dirs;
+    }
+    if (exists $test_data->{DIRS}) {
+        $ENV{XDG_CONFIG_DIRS} = join($Config{path_sep}, @dirs);
+    }
 
     @vars = uniq @ivars;
 }
