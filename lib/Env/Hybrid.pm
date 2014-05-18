@@ -92,7 +92,7 @@ sub _define_read_only {
         }
         my $config = $package->_load();
         my $value = defined($ENV{$name}) ? $ENV{$name} : $config->{$name};
-        $package->validate($name);
+        $package->validate($name, $value);
         return $value;
     };
 }
@@ -144,7 +144,7 @@ sub FETCH {
     my $config = $class->_load();
     my $name = $$self;
     my $value = defined($ENV{$name}) ? $ENV{$name} : $config->{$name};
-    $class->validate($name);
+    $class->validate($name, $value);
     return $value;
 }
 
