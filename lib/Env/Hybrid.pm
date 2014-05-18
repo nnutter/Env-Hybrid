@@ -16,16 +16,12 @@ sub vars { die 'must implement vars()' }
 
 sub relative_path { die 'must implement relative_path()' }
 
-# return a flat hashref
 sub load_file { die 'must implement load_file()' }
 
-# a single base directory relative to which user-specific files should be read
 sub env_config_home {
     return $ENV{XDG_CONFIG_HOME} || File::Spec->join($ENV{HOME}, '.config');
 }
 
-# a delimited list of preference ordered base directories relative to which
-# files should be searched
 sub env_config_dirs {
     return $ENV{XDG_CONFIG_DIRS} || '/etc/xdg';
 }
