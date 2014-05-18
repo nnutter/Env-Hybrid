@@ -18,6 +18,8 @@ sub relative_path { die 'must implement relative_path()' }
 
 sub load_file { die 'must implement load_file()' }
 
+sub validate { 1 }
+
 sub env_config_home {
     return $ENV{XDG_CONFIG_HOME} || File::Spec->join($ENV{HOME}, '.config');
 }
@@ -90,6 +92,8 @@ sub _define_read_only {
         }
         my $config = $package->_load();
         my $value = defined($ENV{$name}) ? $ENV{$name} : $config->{$name};
+        $package->validate($name);
+        return $value;
     };
 }
 
@@ -136,8 +140,12 @@ sub TIESCALAR {
 
 sub FETCH {
     my ($self) = @_;
-    my $config = $self->_load();
-    my $value = defined($ENV{$$self}) ? $ENV{$$self} : $config->{$$self};
+    my $class = ref $self;
+    my $config = $class->_load();
+    my $name = $$self;
+    my $value = defined($ENV{$name}) ? $ENV{$name} : $config->{$name};
+    $class->validate($name);
+    return $value;
 }
 
 sub STORE {
