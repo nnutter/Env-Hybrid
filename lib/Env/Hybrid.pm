@@ -85,6 +85,9 @@ sub _define_read_only {
     my $fqname = join('::', $package, $name);
     no strict 'refs';
     *{"$fqname"} = sub {
+        if (@_) {
+            die "$fqname is read-only";
+        }
         my $config = $package->_load();
         my $value = defined($ENV{$name}) ? $ENV{$name} : $config->{$name};
     };
