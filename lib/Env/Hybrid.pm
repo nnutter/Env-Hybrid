@@ -57,9 +57,9 @@ sub import {
         my ($sigil, $varname) = ($var =~ /^(\$?)(.*)$/);
         _validate_var_name($varname);
         if ($sigil) {
-            _define_scalar($class, $varname);
+            _define_read_write($class, $varname);
         } else {
-            _define_constant($class, $varname);
+            _define_read_only($class, $varname);
         }
     }
 
@@ -73,14 +73,14 @@ sub _set_export_ok {
     @{"$fqname"} = map { $_, '$' . $_ } $package->vars();
 }
 
-sub _define_scalar {
+sub _define_read_write {
     my ($package, $name) = @_;
     my $fqname = join('::', $package, $name);
     no strict 'refs';
     tie ${"$fqname"}, __PACKAGE__, $package, $name;
 }
 
-sub _define_constant {
+sub _define_read_only {
     my ($package, $name) = @_;
     my $fqname = join('::', $package, $name);
     no strict 'refs';
